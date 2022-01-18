@@ -90,67 +90,20 @@ void rgb_matrix_indicators_user(void) {
     }
 
     // Back Light
-    if (layer_state_is(_NUMBERS)) {
-        // L
-        rgb_matrix_set_color(0, 0, 0, 255);
-        rgb_matrix_set_color(1, 0, 0, 255);
-        rgb_matrix_set_color(2, 0, 0, 255);
-        rgb_matrix_set_color(3, 0, 0, 255);
-        rgb_matrix_set_color(4, 0, 0, 255);
-        rgb_matrix_set_color(5, 0, 0, 255);
-        // R
-        rgb_matrix_set_color(27, 0, 0, 255);
-        rgb_matrix_set_color(28, 0, 0, 255);
-        rgb_matrix_set_color(29, 0, 0, 255);
-        rgb_matrix_set_color(30, 0, 0, 255);
-        rgb_matrix_set_color(31, 0, 0, 255);
-        rgb_matrix_set_color(32, 0, 0, 255);
-    } else if (layer_state_is(_SYMBOLS)) {
-        // L
-        rgb_matrix_set_color(0, 255, 0, 0);
-        rgb_matrix_set_color(1, 255, 0, 0);
-        rgb_matrix_set_color(2, 255, 0, 0);
-        rgb_matrix_set_color(3, 255, 0, 0);
-        rgb_matrix_set_color(4, 255, 0, 0);
-        rgb_matrix_set_color(5, 255, 0, 0);
-        // R
-        rgb_matrix_set_color(27, 255, 0, 0);
-        rgb_matrix_set_color(28, 255, 0, 0);
-        rgb_matrix_set_color(29, 255, 0, 0);
-        rgb_matrix_set_color(30, 255, 0, 0);
-        rgb_matrix_set_color(31, 255, 0, 0);
-        rgb_matrix_set_color(32, 255, 0, 0);
-    } else if (layer_state_is(_ADJUST)) {
-        // L
-        rgb_matrix_set_color(0, 0, 255, 0);
-        rgb_matrix_set_color(1, 0, 255, 0);
-        rgb_matrix_set_color(2, 0, 255, 0);
-        rgb_matrix_set_color(3, 0, 255, 0);
-        rgb_matrix_set_color(4, 0, 255, 0);
-        rgb_matrix_set_color(5, 0, 255, 0);
-        // R
-        rgb_matrix_set_color(27, 0, 255, 0);
-        rgb_matrix_set_color(28, 0, 255, 0);
-        rgb_matrix_set_color(29, 0, 255, 0);
-        rgb_matrix_set_color(30, 0, 255, 0);
-        rgb_matrix_set_color(31, 0, 255, 0);
-        rgb_matrix_set_color(32, 0, 255, 0);
-    } else {
-        // L
-        rgb_matrix_set_color(0, 255, 255, 255);
-        rgb_matrix_set_color(1, 255, 255, 255);
-        rgb_matrix_set_color(2, 255, 255, 255);
-        rgb_matrix_set_color(3, 255, 255, 255);
-        rgb_matrix_set_color(4, 255, 255, 255);
-        rgb_matrix_set_color(5, 255, 255, 255);
-        // R
-        rgb_matrix_set_color(27, 255, 255, 255);
-        rgb_matrix_set_color(28, 255, 255, 255);
-        rgb_matrix_set_color(29, 255, 255, 255);
-        rgb_matrix_set_color(30, 255, 255, 255);
-        rgb_matrix_set_color(31, 255, 255, 255);
-        rgb_matrix_set_color(32, 255, 255, 255);
-    }
+    // L
+    rgb_matrix_set_color(0, 255, 255, 255);
+    rgb_matrix_set_color(1, 255, 255, 255);
+    rgb_matrix_set_color(2, 255, 255, 255);
+    rgb_matrix_set_color(3, 255, 255, 255);
+    rgb_matrix_set_color(4, 255, 255, 255);
+    rgb_matrix_set_color(5, 255, 255, 255);
+    // R
+    rgb_matrix_set_color(27, 255, 255, 255);
+    rgb_matrix_set_color(28, 255, 255, 255);
+    rgb_matrix_set_color(29, 255, 255, 255);
+    rgb_matrix_set_color(30, 255, 255, 255);
+    rgb_matrix_set_color(31, 255, 255, 255);
+    rgb_matrix_set_color(32, 255, 255, 255);
 }
 
 int RGB_current_mode;

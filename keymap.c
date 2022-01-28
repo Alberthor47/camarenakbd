@@ -21,7 +21,9 @@ enum layers {
 
 // Custom keycodes for layer keys
 enum custom_keycodes {
-  NEXT = SAFE_RANGE,
+  LOWER = SAFE_RANGE,
+  RAISE,
+  ADJUST,
 };
 
 // Tap dance definitions
@@ -42,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
   TD(TD_CAPLOCK), KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,                         KC_B,    KC_M,    KC_W,    KC_V,   KC_Z,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LCTL, KC_LALT,  KC_LGUI,     KC_SPC,   NEXT, KC_RALT
+                                          KC_LCTL,  LOWER,  KC_LGUI,     KC_SPC,   RAISE, KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -50,11 +52,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX, XXXXXXX,  KC_LCTL, KC_LSFT, KC_LALT,  KC_LGUI,                      KC_LEFT,  KC_DOWN,  KC_UP, KC_RIGHT, KC_RSFT, KC_ENT,
+    XXXXXXX,  KC_LCTL, KC_LSFT, KC_LALT,  KC_LGUI,  XXXXXXX,                      XXXXXXX, KC_LEFT,  KC_DOWN,  KC_UP, KC_RIGHT, KC_ENT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     XXXXXXX,  XXXXXXX,     KC_Z,    KC_X,    KC_C,    KC_V,                         KC_F, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LCTL, KC_LALT,  KC_LGUI,     KC_SPC,   NEXT, KC_RALT
+                                          KC_LCTL,  LOWER,  KC_LGUI,     KC_SPC,   RAISE, KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -62,11 +64,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_ESC,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX,  XXXXXXX,  KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,                       KC_F11, KC_LBRC, KC_RBRC, KC_MINS,  KC_EQL,  KC_ENT,
+    XXXXXXX,  KC_LCTL, KC_LSFT, KC_LALT,  KC_LGUI,  XXXXXXX,                       KC_F11, KC_LBRC, KC_RBRC, KC_MINS,  KC_EQL,  KC_ENT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_F12, KC_QUOT, KC_NUHS, KC_GRV,  KC_SLSH, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LCTL, KC_LALT,  KC_LGUI,     KC_SPC,   NEXT, KC_RALT
+                                          KC_LCTL,  LOWER,  KC_LGUI,     KC_SPC,   RAISE, KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -78,10 +80,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LCTL, KC_LALT,  KC_LGUI,     KC_SPC,   NEXT, KC_RALT
+                                          KC_LCTL,  LOWER,  KC_LGUI,     KC_SPC,   RAISE, KC_RALT
                                       //`--------------------------'  `--------------------------'
   )
 };
+
+void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
+  if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
+    layer_on(layer3);
+  } else {
+    layer_off(layer3);
+  }
+}
 
 void rgb_matrix_indicators_user(void) {
     // CapsLock light
@@ -283,9 +293,9 @@ void render_layer_state(void) {
         0x20, 0xdd, 0xde, 0xdf, 0x20, 0};
     if(layer_state_is(_ADJUST)) {
         oled_write_P(adjust_layer, false);
-    } else if(layer_state_is(_DVORAK)) {
-        oled_write_P(lower_layer, false);
     } else if(layer_state_is(_SYMBOLS)) {
+        oled_write_P(lower_layer, false);
+    } else if(layer_state_is(_NUMBERS)) {
         oled_write_P(raise_layer, false);
     } else {
         oled_write_P(default_layer, false);
@@ -339,19 +349,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
-    case NEXT:
+      case LOWER:
       if (record->event.pressed) {
-        if (layer_state_is(_NUMBERS)) {
-          layer_move(_SYMBOLS);
-        } else if (layer_state_is(_SYMBOLS)) {
-          layer_move(_ADJUST);
-        } else if (layer_state_is(_ADJUST)) {
-          layer_move(_DVORAK);
-        } else {
-          layer_move(_NUMBERS);
-        }
+        layer_on(_SYMBOLS);
+        update_tri_layer_RGB(_SYMBOLS, _NUMBERS, _ADJUST);
+      } else {
+        layer_off(_SYMBOLS);
+        update_tri_layer_RGB(_SYMBOLS, _NUMBERS, _ADJUST);
       }
       return false;
+    case RAISE:
+      if (record->event.pressed) {
+        layer_on(_NUMBERS);
+        update_tri_layer_RGB(_SYMBOLS, _NUMBERS, _ADJUST);
+      } else {
+        layer_off(_NUMBERS);
+        update_tri_layer_RGB(_SYMBOLS, _NUMBERS, _ADJUST);
+      }
+      return false;
+    case ADJUST:
+        if (record->event.pressed) {
+          layer_on(_ADJUST);
+        } else {
+          layer_off(_ADJUST);
+        }
+        return false;
       break;
   }
   return true;
